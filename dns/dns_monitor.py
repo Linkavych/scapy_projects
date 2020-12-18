@@ -13,10 +13,11 @@ signal.signal(signal.SIGINT, signal_handler)
 # Function to find DNS packets and print them to screen
 def find_dns(pkt):
     try:
-        if pkt.haslayer(DNS):
-            print(f"{pkt[IP].src}, {pkt[DNS].summary()}")
+        if pkt.haslayer(DNSRR):
+            print(f"Source: {pkt[IP].src}, Destination: {pkt[IP].dst}\n"
+                   f"Domain: {pkt[DNSRR].rrname.decode()}, IP: {pkt[DNSRR].rdata}\n")
     except:
         pass
 
-sniff(prn=find_dns)
+sniff(prn=find_dns, store=0)
 
